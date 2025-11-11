@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: rag-config
+data:
+  GOOGLE_LOCATION: "us-central1"
+  VERTEX_MODEL_ID: "gemini-1.5-pro"
+  VERTEX_EMBED_MODEL_ID: "text-embedding-004"
+  PINECONE_INDEX: "rag-support-assistant"
+  RAG_TOP_K: "8"
+  HYBRID_ALPHA: "0.7"
+  BM25_TOP_K: "12"
+  SEMANTIC_TOP_K: "12"
+  SIMILARITY_THRESHOLD: "0.25"
