@@ -1,0 +1,27 @@
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  name: rag-support-assistant
+spec:
+  template:
+    spec:
+      containers:
+        - image: REGION-docker.pkg.dev/PROJECT_ID/rag/rag-support-assistant:latest
+          env:
+            - name: GOOGLE_PROJECT_ID
+              value: "PROJECT_ID"
+            - name: GOOGLE_LOCATION
+              value: "us-central1"
+            - name: VERTEX_MODEL_ID
+              value: "gemini-1.5-pro"
+            - name: VERTEX_EMBED_MODEL_ID
+              value: "text-embedding-004"
+            - name: PINECONE_INDEX
+              value: "rag-support-assistant"
+            - name: RAG_TOP_K
+              value: "8"
+            - name: HYBRID_ALPHA
+              value: "0.7"
+          ports:
+            - containerPort: 8080
+      containerConcurrency: 80

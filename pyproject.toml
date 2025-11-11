@@ -1,0 +1,61 @@
+[project]
+name = "rag-support-assistant"
+version = "0.1.0"
+description = "LangGraph-based RAG Support Assistant with Vertex AI and Pinecone"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+  "fastapi>=0.114.2",
+  "uvicorn[standard]>=0.30.6",
+  "pydantic>=2.8.2",
+  "httpx>=0.27.2",
+  "langgraph>=0.2.35",
+  "numpy>=1.26.4",
+  "scikit-learn>=1.5.2",
+  "rank-bm25>=0.2.2",
+  "whoosh>=2.7.4",              # optional search-lite fallback
+  "pinecone-client>=5.0.1",
+  "python-dotenv>=1.0.1",
+  "google-cloud-aiplatform>=1.70.0",
+  "google-auth>=2.33.0",
+  "orjson>=3.10.7"
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=8.1.1",
+  "pytest-asyncio>=0.23.8",
+  "pytest-mock>=3.14.0",
+  "coverage>=7.6.1",
+  "mypy>=1.11.2",
+  "ruff>=0.6.9",
+  "black>=24.8.0",
+  "types-requests",
+  "types-setuptools"
+]
+
+[tool.black]
+line-length = 100
+target-version = ["py311"]
+
+[tool.ruff]
+line-length = 100
+select = ["E","F","I","UP","B","W","SIM","PL"]
+ignore = ["E203", "E501"]  # let black handle
+target-version = "py311"
+
+[tool.mypy]
+python_version = "3.11"
+strict = true
+warn_unreachable = true
+warn_unused_ignores = true
+disallow_untyped_defs = true
+disallow_any_generics = true
+no_implicit_optional = true
+plugins = []
+
+[tool.pytest.ini_options]
+minversion = "8.0"
+addopts = "-q"
+testpaths = ["tests"]
+asyncio_mode = "auto"

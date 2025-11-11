@@ -1,0 +1,9 @@
+version: "3.9"
+services:
+  api:
+    build: .
+    env_file: .env
+    ports:
+      - "8080:8080"
+    depends_on: []
+    command: ["uvicorn", "rag_support.main:app", "--host", "0.0.0.0", "--port", "8080"]
