@@ -14,7 +14,7 @@ dependencies = [
   "scikit-learn>=1.5.2",
   "rank-bm25>=0.2.2",
   "whoosh>=2.7.4",              # optional search-lite fallback
-  "pinecone-client>=5.0.1",
+  "pinecone",
   "python-dotenv>=1.0.1",
   "google-cloud-aiplatform>=1.70.0",
   "google-auth>=2.33.0",
