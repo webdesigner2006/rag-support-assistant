@@ -61,7 +61,7 @@ class VertexClient:
         from vertexai.generative_models import GenerativeModel
 
         model = GenerativeModel(self._model_id)
-        prompt = system_prompt + "
+        prompt = system_prompt + ""
 
 JSON:
 " + json.dumps(message_json, ensure_ascii=False)
