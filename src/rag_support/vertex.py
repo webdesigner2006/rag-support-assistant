@@ -61,17 +61,24 @@ class VertexClient:
         from vertexai.generative_models import GenerativeModel
 
         model = GenerativeModel(self._model_id)
-        prompt = system_prompt + """
-        some text here
-        """
+        prompt = (
+        system_prompt + "\n\nJSON:\n"  + json.dumps(message_json, ensure_ascii=False)
+        )
 
-JSON:
-" + json.dumps(message_json, ensure_ascii=False)
-        resp = model.generate_content([prompt], generation_config={"temperature": temperature, "max_output_tokens": 512})
+        resp = model.generate_content(
+                [prompt],
+                generation_config={"temperature": temperature, "max_output_tokens": 512},
+                )
         text = (resp.text or "").strip()
-        # ensure valid json
+# ensure valid json
         try:
             obj = json.loads(text)
         except Exception:
-            obj = {"verdict": "fail", "reasons": ["invalid_json"], "flags": {"policy_violation": True}}
-        return obj
+            obj = {
+            "verdict": "fail",
+            "reasons": ["invalid_json"],
+            "flags": {"policy_violation": True},
+            }
+    return obj
+
+       
