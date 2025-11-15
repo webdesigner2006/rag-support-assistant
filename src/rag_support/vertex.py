@@ -54,31 +54,42 @@ class VertexClient:
         }
         return VertexTextResult(text=text, usage=usage)
 
-    def judge(self, system_prompt: str, message_json: Dict[str, Any], temperature: float = 0.0) -> Dict[str, Any]:
+    def judge(
+        self,
+        system_prompt: str,
+        message_json: Dict[str, Any],
+        temperature: float = 0.0,
+    ) -> Dict[str, Any]:
         """
         LLM-as-judge: returns structured JSON per schema.
         """
         from vertexai.generative_models import GenerativeModel
 
         model = GenerativeModel(self._model_id)
+
         prompt = (
-        system_prompt + "\n\nJSON:\n"  + json.dumps(message_json, ensure_ascii=False)
+            system_prompt
+            + "\n\nJSON:\n"
+            + json.dumps(message_json, ensure_ascii=False)
         )
 
         resp = model.generate_content(
-                [prompt],
-                generation_config={"temperature": temperature, "max_output_tokens": 512},
-                )
+            [prompt],
+            generation_config={"temperature": temperature, "max_output_tokens": 512},
+        )
         text = (resp.text or "").strip()
-# ensure valid json
+
+        # ensure valid JSON
         try:
             obj = json.loads(text)
         except Exception:
             obj = {
-            "verdict": "fail",
-            "reasons": ["invalid_json"],
-            "flags": {"policy_violation": True},
+                "verdict": "fail",
+                "reasons": ["invalid_json"],
+                "flags": {"policy_violation": True},
             }
-    return obj
 
-       
+        return obj
+
+    
+    
