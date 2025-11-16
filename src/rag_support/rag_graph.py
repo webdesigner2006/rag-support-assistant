@@ -66,37 +66,17 @@ class RagGraph:
             ctx_lines = [f"[{i}] {v['text']}" for i, v in enumerate(validated, start=1)]
             cite_map = {str(i): v for i, v in enumerate(validated, start=1)}
             user_prompt = state["query"]
-            prompt = (
-                GENERATOR_SYSTEM_PROMPT
-                + "
+                  # Construct prompt properly
+        prompt = (
+            GENERATOR_SYSTEM_PROMPT
+            + "\n\nCONTEXT:\n"
+            + "\n".join(ctx_lines)
+            + "\n\nUSER:\n"
+            + user_prompt
+            + "\n\nRemember to cite using [#source-id]."
+        )
 
-CONTEXT:
-"
-                + "
-".join(ctx_lines)
-                + "
-
-USER:
-"
-                + user_prompt
-                + "
-
-Remember to cite using [#source-id]."
-            )
-            res = self.vertex.generate(prompt, temperature=self.cfg.gen_temperature, max_tokens=self.cfg.max_tokens)
-            citations: List[Citation] = []
-            used_ids: set[str] = set()
-            for i, v in enumerate(validated, start=1):
-                sid = v.get("source_id") or v.get("chunk_id")
-                if sid and sid not in used_ids:
-                    citations.append(Citation(source_id=sid, title=v.get("title"), url=v.get("url"), chunk_id=v["chunk_id"]))
-                    used_ids.add(sid)
-            return {"answer": res.text, "citations": citations, "usage": res.usage}
-
-        def node_evaluator(state: Dict[str, Any]) -> Dict[str, Any]:
-            payload = {
-                "query": state["query"],
-                "answer": state.get("answer", ""),
+#Reember to cite using [#source-id]."
                 "validated": state.get("validated", []),
             }
             report = self.vertex.judge(EVALUATOR_SYSTEM_PROMPT, payload, temperature=0.0)
