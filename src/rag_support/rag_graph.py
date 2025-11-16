@@ -31,19 +31,18 @@ Evaluate whether the answer is grounded in the provided validated chunks and fre
 """
 
 
+
 class RagGraph:
     """
     LangGraph RAG pipeline: retriever -> validator -> generator -> evaluator -> (optional repair)
-    """
-
+    "
     def __init__(self, cfg=settings, retrieval: RetrievalService | None = None):
         self.cfg = cfg
         self.vertex = VertexClient()
         self.retrieval = retrieval or RetrievalService(cfg)
-       async def run_query(
+    def run_query(
         self, query: str, top_k: int, alpha: float, metadata_filters: Dict[str, Any]
-    ) -> Tuple[str, List[Citation], QueryDebug, Dict[str, int]]:
-        # Build graph on-demand (small graph, OK to compile per request)
+    ) ->         # Build graph on-demand (small graph, OK to compile per request)
 
         def node_retriever(state: Dict[str, Any]) -> Dict[str, Any]:
             # docs are already retrieved asynchronously outside the graph
@@ -107,9 +106,11 @@ class RagGraph:
             # Prepare payload for LLM-as-judge
             citations: List[Citation] = state.get("citations", [])
             payload = {
+            
                 "query": state.get("query", ""),
                 "answer": state.get("answer", ""),
-                "citations": [
+         
+              "citations": [
                     {
                         "source_id": c.source_id,
                         "title": c.title,
