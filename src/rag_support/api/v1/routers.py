@@ -6,7 +6,7 @@ from .deps import get_settings
 from ...logging import logger
 from ...services.ingestion import IngestionService
 from ...services.retrieval import RetrievalService
-from ....rag_graph import RagGraph
+from ...rag_graph import RagGraph
 from ...config import Settings
 
 router = APIRouter(prefix="/v1", tags=["v1"])
