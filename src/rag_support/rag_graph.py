@@ -40,8 +40,7 @@ class RagGraph:
         self.cfg = cfg
         self.vertex = VertexClient()
         self.retrieval = retrieval or RetrievalService(cfg)
-
-     async def run_query(
+       async def run_query(
         self, query: str, top_k: int, alpha: float, metadata_filters: Dict[str, Any]
     ) -> Tuple[str, List[Citation], QueryDebug, Dict[str, int]]:
         # Build graph on-demand (small graph, OK to compile per request)
@@ -174,3 +173,6 @@ class RagGraph:
         usage = result.get("usage", {"prompt_tokens": 0, "candidates_tokens": 0})
 
         return answer, citations, debug, usage
+
+
+    
