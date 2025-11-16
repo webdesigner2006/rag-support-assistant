@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from fastapi import Depends
-from ..v1 import QueryRequest
+
 
 from ...config import settings
 
